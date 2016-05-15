@@ -3,13 +3,13 @@
 #include <Arduino.h>
 #include <CalibratedSensor.h>
 
-template<int storeCount, uint8_t aggregateSize> class CalibratedSensorArray {
+template<class T, uint8_t aggregateSize> class CalibratedSensorArray {
 
 public:
-  CalibratedSensorArray(CalibratedSensor<storeCount> *array, uint8_t size);
+  CalibratedSensorArray(T *sensors, uint8_t size);
 
 private:
-  Sensor *_array;
+  T *_sensors;
   uint8_t _size;
   int _aggregate[aggregateSize];
 
@@ -23,27 +23,27 @@ private:
 
 };
 
-template<int storeCount, uint8_t aggregateSize>
-CalibratedSensorArray<storeCount, aggregateSize>::CalibratedSensorArray(CalibratedSensor<storeCount> *array, uint8_t size) : _array(array), _size(size) {}
+template<class T, uint8_t aggregateSize>
+CalibratedSensorArray<T, aggregateSize>::CalibratedSensorArray(T *sensors, uint8_t size) : _sensors(sensors), _size(size) {}
 
-template<int storeCount, uint8_t aggregateSize>
-int CalibratedSensorArray<storeCount, aggregateSize>::readMax() {
+template<class T, uint8_t aggregateSize>
+int CalibratedSensorArray<T, aggregateSize>::readMax() {
   resetAggregate(0);
   for (int i = 0; i < _size; i++) {
     uint8_t position = positionOfMin();
-    int value = _array[i].read();
+    int value = _sensors[i].read();
     if (value > _aggregate[i]) _aggregate[i] = value;
   }
   return sum();
 }
 
-template<int storeCount, uint8_t aggregateSize>
-void CalibratedSensorArray<storeCount, aggregateSize>::resetAggregate(int value) {
+template<class T, uint8_t aggregateSize>
+void CalibratedSensorArray<T, aggregateSize>::resetAggregate(int value) {
   for (int i = 0; i < aggregateSize; i++) _aggregate[i] = value;
 }
 
-template<int storeCount, uint8_t aggregateSize>
-uint8_t CalibratedSensorArray<storeCount, aggregateSize>::positionOfMin() {
+template<class T, uint8_t aggregateSize>
+uint8_t CalibratedSensorArray<T, aggregateSize>::positionOfMin() {
   uint8_t position = 0;
   for (int i = 1; i < aggregateSize; i++) {
     if (_aggregate[i] < _aggregate[position]) position = i;
@@ -51,8 +51,8 @@ uint8_t CalibratedSensorArray<storeCount, aggregateSize>::positionOfMin() {
   return position;
 }
 
-template<int storeCount, uint8_t aggregateSize>
-int CalibratedSensorArray<storeCount, aggregateSize>::sum() {
+template<class T, uint8_t aggregateSize>
+int CalibratedSensorArray<T, aggregateSize>::sum() {
   int result = _aggregate[0];
   for (int i = 1; i < aggregateSize; i++) result += _aggregate[i];
   return result;

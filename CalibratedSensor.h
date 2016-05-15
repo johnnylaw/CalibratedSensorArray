@@ -7,10 +7,10 @@
 
 class Sensor {
 public:
-  int read();
+  int read() { return -555; };
 };
 
-template<int storeCount> class CalibratedSensor : Sensor {
+template<int storeCount> class CalibratedSensor : public Sensor {
 
 public:
   CalibratedSensor(uint8_t pin, uint8_t initialPosition);
