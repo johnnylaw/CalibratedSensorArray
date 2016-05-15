@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Arduino.h>
-#include <CalibratedSensor.h>
+#include <Sensor.h>
 
 template<class T, uint8_t aggregateSize> class SensorArray {
 

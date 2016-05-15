@@ -1,14 +1,10 @@
 #pragma once
 
 #include <Arduino.h>
+#include <Sensor.h>
 
 #define _CALIBRATED_SENSOR_STORE_INTERVAL 16
 #define _CALIBRATED_SENSOR_MAXIMUM_VALUE 4095
-
-class Sensor {
-public:
-  int read() { return -555; };
-};
 
 template<int storeCount> class CalibratedSensor : public Sensor {
 

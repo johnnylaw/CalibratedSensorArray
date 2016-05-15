@@ -1,6 +1,5 @@
-#include <CalibratedSensorArray.h>
+#include <SensorArray.h>
 #include <ArduinoUnit.h>
-
 
 class SensorSubclass : public Sensor {
 public:
