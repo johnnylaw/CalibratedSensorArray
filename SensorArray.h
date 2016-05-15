@@ -33,7 +33,6 @@ int SensorArray<T, aggregateSize>::readMax() {
     uint8_t position = positionOfMin();
     int value = _sensors[i].read();
     if (value > _aggregate[position]) _aggregate[position] = value;
-    Serial.println(value);
   }
   return sum();
 }
